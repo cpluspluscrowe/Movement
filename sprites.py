@@ -6,6 +6,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+BLUE = (0,0,255)
 class Match():
     def __init__(self,team1,team2):
         self.Team1 = team1
@@ -62,24 +63,18 @@ class Block(pygame.sprite.Sprite):
         #self.rect.center = (self.rect.center[0]+random.randrange(-3,3),self.rect.center[1]+random.randrange(-3,3))
  
  
-# Initialize Pygame
 pygame.init()
  
-# Set the height and width of the screen
 screen_width = 600
 screen_height = 600
 screen = pygame.display.set_mode([screen_width, screen_height])
+
  
-# This is a list of 'sprites.' Each block in the program is
-# added to this list. The list is managed by a class called 'Group.'
-#block_list = pygame.sprite.Group()
- 
-# This is a list of every sprite. All blocks and the player block as well.
 all_sprites_list = pygame.sprite.Group()
 positions = [[20,20],[270,540],[540,0]]
 for i in range(3):
     # This represents a block
-    player = Player(Block(BLACK),"Blue")
+    player = Player(Block(BLUE),"Blue")
     print(positions[i])
     # Set a random location for the block
     player.Image.rect.x = positions[i][0]
@@ -94,7 +89,11 @@ player = Player(Block(RED),"Red")
 player.Image.rect.x = 270
 player.Image.rect.y = 270
 all_sprites_list.add(player.Image)
- 
+
+ball = Ball(Block(BLACK))
+ball.Image.rect.x  = 250
+ball.Image.rect.y = 250
+all_sprites_list.add(ball.Image)
 done = False
  
 clock = pygame.time.Clock()
