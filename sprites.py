@@ -1,38 +1,63 @@
 import pygame
 import random
 
- # Define some colors
-BLACK = (0, 0, 0)
+BLACK = (0, 0, 0)# Define some colors
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (0,0,255)
+
+pygame.init() #Game details
+screen_width = 600
+screen_height = 600
+screen = pygame.display.set_mode([screen_width, screen_height])
+all_sprites_list = pygame.sprite.Group()
+
 class Match():
     def __init__(self,team1,team2):
         self.Team1 = team1
         self.Team2 = team2
+        self.AllPlayers = team1.Players + team2.Players #append lists together
 class Team():
     def __init__(self,players,color):
         self.Players = players
         self.Color = color
+    def AddPlayer(self,player):
+        self.Players.append(player)
+    def Pass(self,passingPlayer,receivingPlayer,ball):
+        passingPlayer.HasBall = False
+        receivingPlayer.HasBall = True
+        ball.Move(orig,dest)
 class Ball():
-    def __init__(self,image):
+    def __init__(self,image,coords):
         self.Image = image
+        self.coords = coords
+        all_sprites_list.add(self.Image)
+        self.setPosition(self.coords)
+    def setPosition(self,coords):
+        print(coords)
+        self.Image.rect.x  = coords[0] #Notice not self, just in case we want to pass something in
+        self.Image.rect.y = coords[1] 
 class Player():
-    def __init__(self,image,team):
+    def __init__(self,image,coords,team,hasBall = False):
         self.Team = team
         self.Image = image
-        self.HasBall = False
-    def Pass(self,angle,distance):
-        pass
+        self.coords = coords#x and y list
+        all_sprites_list.add(self.Image)
+        self.setPosition(self.coords)
+        self.HasBall = hasBall
+        print(self.HasBall)
     def Run(self,angle,distance):
         pass
+    def setPosition(self,coords):
+        self.Image.rect.x = coords[0]
+        self.Image.rect.y = coords[1]
 class Block(pygame.sprite.Sprite):
     """
     This class represents the ball
     It derives from the "Sprite" class in Pygame
     """
-    def __init__(self,color):
+    def __init__(self,color,size = 20):
         """ Constructor. Pass in the color of the block,
         and its x and y position. """
         # Call the parent class (Sprite) constructor
@@ -40,14 +65,14 @@ class Block(pygame.sprite.Sprite):
  
         # Create an image of the block, and fill it with a color.
         # This could also be an image loaded from the disk.
-        self.image = pygame.Surface((20, 20))
+        self.image = pygame.Surface((size, size))
         self.image.fill((255,255,255))
  
         # Fetch the rectangle object that has the dimensions of the image
         # image.
         # Update the position of this object by setting the values
         # of rect.x and rect.y
-        self.rect = pygame.draw.circle(self.image, color, (10, 10), 10, 0)
+        self.rect = pygame.draw.circle(self.image, color, (int(size/2), int(size/2)), int(size/2), 0)
         self.rect = self.image.get_rect()
  
     def reset_pos(self):
@@ -62,42 +87,20 @@ class Block(pygame.sprite.Sprite):
         # Don't move for now
         #self.rect.center = (self.rect.center[0]+random.randrange(-3,3),self.rect.center[1]+random.randrange(-3,3))
  
- 
-pygame.init()
- 
-screen_width = 600
-screen_height = 600
-screen = pygame.display.set_mode([screen_width, screen_height])
-
- 
-all_sprites_list = pygame.sprite.Group()
 positions = [[20,20],[270,540],[540,0]]
+hasBall = [True,False,False]
+team1 = Team([],"Blue")
 for i in range(3):
-    # This represents a block
-    player = Player(Block(BLUE),"Blue")
-    print(positions[i])
-    # Set a random location for the block
-    player.Image.rect.x = positions[i][0]
-    player.Image.rect.y = positions[i][1]
- 
-    # Add the block to the list of objects
-    #block_list.add(block)
+    player = Player(Block(BLUE),[positions[i][0],positions[i][1]],"Blue",hasBall[i])
     all_sprites_list.add(player.Image)
- 
-# Create a red player block
-player = Player(Block(RED),"Red")
-player.Image.rect.x = 270
-player.Image.rect.y = 270
-all_sprites_list.add(player.Image)
-
-ball = Ball(Block(BLACK))
-ball.Image.rect.x  = 250
-ball.Image.rect.y = 250
-all_sprites_list.add(ball.Image)
+    team1.AddPlayer(player)
+team2 = Team([],"Red")
+player = Player(Block(RED),[270,270],"Red")
+team2.AddPlayer(player)
+match = Match(team1,team2)
+ball = Ball(Block(BLACK,10),[30,30])
 done = False
- 
 clock = pygame.time.Clock()
- 
 score = 0
  
 # -------- Main Program Loop -----------
@@ -106,27 +109,13 @@ while not done:
         if event.type == pygame.QUIT:
             done = True
  
-    # Clear the screen
     screen.fill(WHITE)
- 
-    # Calls update() method on every sprite in the list
     all_sprites_list.update()
- 
-    # See if the player block has collided with anything.
-    #blocks_hit_list = pygame.sprite.spritecollide(player, block_list, False)
- 
-    # Check the list of collisions.
- 
-        # Reset block to the top of the screen to fall again.
-    player.Image.reset_pos()
- 
-    # Draw all the spites
     all_sprites_list.draw(screen)
- 
-    # Limit to 20 frames per second
     clock.tick(20)
- 
-    # Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
+    for player in match.AllPlayers:
+        if player.HasBall == True:
+            player.Pass()
  
 pygame.quit()
