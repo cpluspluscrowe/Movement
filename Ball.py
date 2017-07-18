@@ -2,7 +2,7 @@ class Ball():
     def __init__(self,image,coords):
         self.Image = image
         self.coords = coords
-        all_sprites_list.add(self.Image)
+        #all_sprites_list.add(self.Image)
         self.setPosition(self.coords)
     def setPosition(self,coords):
         print(coords)

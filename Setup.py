@@ -1,6 +1,10 @@
 import pygame
 from Config import *
-
+from Team import Team
+from Player import Player
+from Block import Block
+from Match import Match
+from Ball import Ball
 
 pygame.init() #Game details
 screen = pygame.display.set_mode([screen_width, screen_height])
@@ -19,3 +23,4 @@ match = Match(team1,team2)
 ball = Ball(Block(BLACK,10),[30,30])
 done = False
 clock = pygame.time.Clock()
+screen.fill(WHITE)
