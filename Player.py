@@ -1,3 +1,5 @@
+from Config import *
+
 class Player():
     def __init__(self,image,coords,team,hasBall = False):
         self.Team = team

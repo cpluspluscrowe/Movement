@@ -1,10 +1,9 @@
 import pygame
-from Player import Player
 from Ball import Ball
 from Block import Block
 from Team import Team
 from Match import Match
-from Config import *
+from Setup import *
 
 
 
