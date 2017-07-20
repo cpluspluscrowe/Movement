@@ -1,15 +1,6 @@
-class Vector():
-    def __init__(self,x = 0,y = 0):
-        self.x = x
-        self.y = y
+from Vector import VectorManager
 
-class Ball():
+class Ball(VectorManager):
     def __init__(self,image,coords):
-        self.Image = image
+        super().__init__("Black",coords[0],coords[1])
         self.coords = coords
-        self.setPosition(self.coords)
-    def setPosition(self,coords):
-        self.Image.rect.x  = coords[0]
-        self.Image.rect.y = coords[1]
-    def setVector(vector):
-        self.vector = vector

@@ -6,9 +6,6 @@ from Match import Match
 from Setup import *
 from Globals import Globals
 
-vectorPlayer = team2.Players[0]
-
-
 # -------- Main Program Loop -----------
 while not done:
     for event in pygame.event.get():
@@ -18,6 +15,7 @@ while not done:
     Globals.sprites_list.draw(Globals.screen)
     clock.tick(20)
     pygame.display.flip()
-    vectorPlayer.Move()
+    for player in Globals.player_list:
+        player.Move()
  
 pygame.quit()
