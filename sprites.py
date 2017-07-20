@@ -4,18 +4,20 @@ from Block import Block
 from Team import Team
 from Match import Match
 from Setup import *
+from Globals import Globals
+
+vectorPlayer = team2.Players[0]
+
 
 # -------- Main Program Loop -----------
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
-    all_sprites_list.update()
-    all_sprites_list.draw(screen)
+    Globals.sprites_list.update()
+    Globals.sprites_list.draw(Globals.screen)
     clock.tick(20)
     pygame.display.flip()
-    for player in match.AllPlayers:
-        if player.HasBall == True:
-            player.Pass()
+    vectorPlayer.Move()
  
 pygame.quit()
