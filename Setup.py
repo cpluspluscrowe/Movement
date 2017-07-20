@@ -21,7 +21,7 @@ team2.AddPlayer(player)
 
 match = Match(team1,team2)
 
-ball = Ball(Block(BLACK,10),[60,60])
+ball = Ball([60,60],"Black")
 
 done = False
 clock = pygame.time.Clock()

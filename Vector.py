@@ -29,19 +29,24 @@ class Vector():
         self.vector_x = vector_x
     def setY(self,vector_y):
         self.vector_y = vector_y
+    def setPosition(self,x=0,y=0):
+        #print(self.Image.rect.x,self.Image.rect.y,x,y)
+        self.Image.rect.x = x
+        self.Image.rect.y = y
 
 class VectorManager():
     def __init__(self,color,x = 0, y = 0):
         self.dims = 600
         if color == "Blue":
             self.vector = Vector(Block(BLUE),-5,-5)
-            self.vector.move = DefenderVector.move
+            self.vector.move = PasserVector.move
         elif color == "Red":
             self.vector = Vector(Block(RED),0,0)
-            self.vector.move = BallVector.move
+            self.vector.move = DefenderVector.move
         elif color == "Black":
             self.vector = Vector(Block(BLACK),0,0)
-            self.vector.move = PasserVector.move
+            self.vector.move = BallVector.move
+        self.vector.setPosition(x,y)
     def CheckBoundaries(self):
         if self.vector.Image.rect.x > 595:
             self.vector.setX(-1)
